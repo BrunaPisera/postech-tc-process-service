@@ -1,0 +1,42 @@
+name: Build and test .NET
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: [ "master", "develop", "actions", "f_*"]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Install coverlet
+      run: dotnet tool install --global coverlet.console
+    - name: Install sonarscanner
+      run: dotnet tool install --global dotnet-sonarscanner
+    - name: Unshallow
+      run: git fetch --unshallow
+    - name: Run sonarscanner
+      run: dotnet sonarscanner begin /k:"BrunaPisera_postech-tc-process-service" /o:"bruna-org" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths=**/coverage.xml /d:sonar.verbose=true
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Generate coverage file
+      run: |
+        for project in $(find . -type f -name "*.Tests.csproj"); do
+          dotnet test "$project" --no-build --verbosity normal \
+            /p:CollectCoverage=true \
+            /p:CoverletOutput=coverage.xml \
+            /p:CoverletOutputFormat=opencover \
+            /p:UseSourceLink=false
+        done
+    - name: End sonarscanner
+      run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
