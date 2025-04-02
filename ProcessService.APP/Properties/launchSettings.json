@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ProcessService.APP": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
