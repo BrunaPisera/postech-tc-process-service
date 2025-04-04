@@ -13,26 +13,34 @@ namespace ProcessService.Infrastructure.Broker
         private readonly IConnection _connection;
 
         public BrokerConnection()
-        {         
-            //var hostName = Environment.GetEnvironmentVariable("BROKER_HOSTNAME");
-            //var portString = Environment.GetEnvironmentVariable("BROKER_PORT");
+        {
+            var hostName = Environment.GetEnvironmentVariable("BROKER_HOSTNAME");
+            var portString = Environment.GetEnvironmentVariable("BROKER_PORT");
+            var userName = Environment.GetEnvironmentVariable("BROKER_USERNAME");
+            var password = Environment.GetEnvironmentVariable("BROKER_PASSWORD");
+            var virtualHost = Environment.GetEnvironmentVariable("BROKER_VIRTUALHOST");
 
-            //if (string.IsNullOrEmpty(portString) || !int.TryParse(portString, out var port))
-            //{
-            //    throw new ArgumentException("A variável de ambiente BROKER_PORT é inválida ou não está definida.");
-            //}
+            if (string.IsNullOrEmpty(hostName) ||
+                string.IsNullOrEmpty(portString) ||
+                string.IsNullOrEmpty(userName) ||
+                string.IsNullOrEmpty(password) ||
+                string.IsNullOrEmpty(virtualHost))
+            {
+                throw new Exception("Alguma variável de ambiente do broker está faltando.");
+            }
 
-            //var userName = Environment.GetEnvironmentVariable("BROKER_USERNAME");
-            //var password = Environment.GetEnvironmentVariable("BROKER_PASSWORD");
-            //var virtualHost = Environment.GetEnvironmentVariable("BROKER_VIRTUALHOST");
+            if (!int.TryParse(portString, out var port))
+            {
+                throw new Exception("BROKER_PORT inválido.");
+            }
 
             var factory = new ConnectionFactory
             {
-                HostName = "",
-                Port = 123,
-                UserName = "",
-                Password = "",
-                VirtualHost = ""
+                HostName = hostName,
+                Port = port,
+                UserName = userName,
+                Password = password,
+                VirtualHost = virtualHost
             };
 
             _connection = factory.CreateConnection();
