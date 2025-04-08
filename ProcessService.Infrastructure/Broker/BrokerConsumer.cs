@@ -13,12 +13,12 @@ namespace ProcessService.Infrastructure.Broker
             _brokerConnection = brokerConnection;     
         }
 
-        public void BrokerStartConsumer<T>(string queueName, string exchange, Action<string> callback)
+        public void BrokerStartConsumer<T>(string queueName, string exchange, string routingKey, Action<string> callback)
         {
             var channel = _brokerConnection.CreateChannel();
 
             channel.ExchangeDeclare(exchange: exchange,
-                                    type: ExchangeType.Fanout,
+                                    type: ExchangeType.Topic,
                                     durable: true,
                                     autoDelete: false);
 
@@ -26,7 +26,7 @@ namespace ProcessService.Infrastructure.Broker
 
             channel.QueueBind(queue: queueName,
                                 exchange: exchange,
-                                routingKey: "");
+                                routingKey: routingKey);
 
             var consumer = new EventingBasicConsumer(channel);
 
@@ -34,7 +34,7 @@ namespace ProcessService.Infrastructure.Broker
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                
+
                 try
                 {
                     if (message != null)

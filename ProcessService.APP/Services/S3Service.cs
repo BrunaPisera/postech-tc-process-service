@@ -48,7 +48,7 @@ namespace ProcessService.APP.Services
                 Expires = DateTime.UtcNow.AddMinutes(durationInMinutes)
             };
 
-            return _client.GetPreSignedUrl(request);
+            return _client.GetPreSignedURL(request);
         }
 
         public async Task DeleteOriginalVideoAsync(string videoName)
