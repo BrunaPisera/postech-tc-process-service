@@ -1,4 +1,4 @@
-﻿using Amazon.S3.Model;
+using Amazon.S3.Model;
 using Amazon.S3;
 using Amazon;
 using Microsoft.Extensions.Configuration;
@@ -37,6 +37,18 @@ namespace ProcessService.APP.Services
             };
 
             await _client.PutObjectAsync(putRequest);
+        }
+
+        public string GetPresignedUrl(string objectKey, double durationInMinutes = 60)
+        {
+            var request = new GetPreSignedUrlRequest
+            {
+                BucketName = BucketName,
+                Key = objectKey,
+                Expires = DateTime.UtcNow.AddMinutes(durationInMinutes)
+            };
+
+            return _client.GetPreSignedUrl(request);
         }
 
         public async Task DeleteOriginalVideoAsync(string videoName)
