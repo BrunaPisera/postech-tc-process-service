@@ -15,6 +15,11 @@ RUN dotnet publish ProcessService.APP/ProcessService.APP.csproj -c Release -o ou
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 
+# Install FFmpeg
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
+
 # Copia os arquivos publicados do estágio build para o estágio final
 COPY --from=build /app/out .
 

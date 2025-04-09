@@ -1,7 +1,6 @@
 using Amazon.S3.Model;
 using Amazon.S3;
 using Amazon;
-using Microsoft.Extensions.Configuration;
 
 namespace ProcessService.APP.Services
 {
@@ -10,12 +9,23 @@ namespace ProcessService.APP.Services
         private readonly AmazonS3Client _client;
         private const string BucketName = "videouploadtc";
 
-        public S3Service(IConfiguration configuration)
+        public S3Service()
         {
-            _client = new AmazonS3Client(configuration["Aws:AwsAccessKeyId"], 
-                                        configuration["Aws:AwsSecretAccessKey"],
-                                        configuration["Aws:AwsSessionToken"],
-                                        RegionEndpoint.USEast1);
+            var accessKeyId = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
+            var secretAccessKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
+            var sessionToken = Environment.GetEnvironmentVariable("AWS_SESSION_TOKEN");
+
+            if (string.IsNullOrEmpty(accessKeyId) ||
+                string.IsNullOrEmpty(secretAccessKey) ||
+                string.IsNullOrEmpty(sessionToken))
+            {
+                throw new Exception("AWS credentials environment variables are missing.");
+            }
+
+            _client = new AmazonS3Client(accessKeyId, 
+                                       secretAccessKey,
+                                       sessionToken,
+                                       RegionEndpoint.USEast1);
         }
 
         public async Task<byte[]> DownloadVideoAsync(string videoName)
