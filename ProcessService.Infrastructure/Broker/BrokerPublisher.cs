@@ -6,7 +6,7 @@ namespace Pedidos.Infrastructure.Broker
 {
     public interface IBrokerPublisher
     {
-        void PublishMessage(string exchange, string message, string routingKey);
+        void PublishMessage(string exchange, string message, string queue, string routingKey);
     }
 
     public class BrokerPublisher : IBrokerPublisher
@@ -17,7 +17,7 @@ namespace Pedidos.Infrastructure.Broker
             _brokerConnection = brokerConnection;
         }
 
-        public void PublishMessage(string exchange, string message, string routingKey)
+        public void PublishMessage(string exchange, string message, string queue, string routingKey)
         {
             using (var channel = _brokerConnection.CreateChannel())
             {
@@ -28,9 +28,9 @@ namespace Pedidos.Infrastructure.Broker
                 
                 var body = Encoding.UTF8.GetBytes(message);
 
-                channel.QueueDeclare("videoStatus", true, false, false, null);
+                channel.QueueDeclare(queue, true, false, false, null);
 
-                channel.QueueBind(queue: "videoStatus",
+                channel.QueueBind(queue: queue,
                                     exchange: exchange,
                                     routingKey: routingKey);
 

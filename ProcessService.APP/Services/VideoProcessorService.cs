@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Pedidos.Infrastructure.Broker;
 using ProcessService.Infrastructure.Broker;
+using System.Collections;
 using System.Text.Json;
 
 namespace ProcessService.APP.Services
@@ -38,12 +39,15 @@ namespace ProcessService.APP.Services
             {
                 Console.WriteLine($"Iniciando processamento: {videoName}");
 
+                PublishVideoMessage(videoName, "videoStatus.Process", "video.inprocess");
+
                 var videoUrl = await HandleVideoProcessingAsync(videoName);
 
-                PublishVideoProcessedMessage(videoName, videoUrl);
+                PublishVideoMessage(videoName, videoUrl, "videoStatus.Ready", "video.processed");
             }
             catch (Exception ex)
             {
+                PublishVideoMessage(videoName, "videoStatus.Error", "video.error");
                 Console.Error.WriteLine($"Erro ao processar vídeo {videoName}: {ex.Message}");
             }
         }
@@ -61,20 +65,26 @@ namespace ProcessService.APP.Services
             return _s3Service.GetPresignedUrl($"imagens/{Path.GetFileName(framesZipPath)}");
         }
 
-        private void PublishVideoProcessedMessage(string videoName, string videoUrl)
+        private void PublishVideoMessage(string videoName, string videoUrl, string queueName, string routingKey)
         {
-            var publisher = new BrokerPublisher(_brokerConnection);
-
             var message = new VideoProcessedMessage
             {
                 FilesURL = videoUrl,
                 VideoKey = videoName
             };
 
+            PublishVideoMessage(JsonSerializer.Serialize(message), queueName, routingKey);
+        }
+
+        private void PublishVideoMessage(string message, string queueName, string routingKey)
+        {
+            var publisher = new BrokerPublisher(_brokerConnection);
+
             publisher.PublishMessage(
                 exchange: Exchange,
-                message: JsonSerializer.Serialize(message),
-                routingKey: "video.processed");
+                message: message,
+                queue: queueName,
+                routingKey: routingKey);
         }
     }
 }

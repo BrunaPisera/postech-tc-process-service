@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using ProcessService.Infrastructure.Broker;
 using ProcessService.APP.Services;
-using Microsoft.Extensions.Configuration;
 using DotNetEnv;
 
 Env.Load();
