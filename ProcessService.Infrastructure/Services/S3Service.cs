@@ -7,26 +7,13 @@ namespace ProcessService.Infrastructure.Services
 {
     public class S3Service : IS3Service, IDisposable
     {
-        private readonly AmazonS3Client _client;
+        private readonly IAmazonS3 _client;
         private const string BucketName = "videouploadtc";
 
-        public S3Service()
+        // New constructor for dependency injection
+        public S3Service(IAmazonS3 s3Client)
         {
-            var accessKeyId = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
-            var secretAccessKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
-            var sessionToken = Environment.GetEnvironmentVariable("AWS_SESSION_TOKEN");
-
-            if (string.IsNullOrEmpty(accessKeyId) ||
-                string.IsNullOrEmpty(secretAccessKey) ||
-                string.IsNullOrEmpty(sessionToken))
-            {
-                throw new Exception("AWS credentials environment variables are missing.");
-            }
-
-            _client = new AmazonS3Client(accessKeyId, 
-                                       secretAccessKey,
-                                       sessionToken,
-                                       RegionEndpoint.USEast1);
+            _client = s3Client ?? throw new ArgumentNullException(nameof(s3Client));
         }
 
         public async Task<byte[]> DownloadVideoAsync(string videoName)
@@ -52,6 +39,8 @@ namespace ProcessService.Infrastructure.Services
 
         public string GetPresignedUrl(string objectKey, double durationInMinutes = 60)
         {
+            if (string.IsNullOrEmpty(objectKey))
+                throw new ArgumentNullException(nameof(objectKey));
             var request = new GetPreSignedUrlRequest
             {
                 BucketName = BucketName,
