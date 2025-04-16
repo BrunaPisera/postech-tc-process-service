@@ -21,7 +21,7 @@ rabbitmq:
 
 # Secret
 secret:
-  name: secret
+  name: process-secret
 
 aws:
   accessKeyId: 
