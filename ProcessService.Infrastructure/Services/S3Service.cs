@@ -1,10 +1,11 @@
 using Amazon.S3.Model;
 using Amazon.S3;
 using Amazon;
+using ProcessService.APP.Interfaces;
 
-namespace ProcessService.APP.Services
+namespace ProcessService.Infrastructure.Services
 {
-    public class S3Service : IDisposable
+    public class S3Service : IS3Service, IDisposable
     {
         private readonly AmazonS3Client _client;
         private const string BucketName = "videouploadtc";

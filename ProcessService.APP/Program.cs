@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProcessService.Infrastructure.Broker;
-using ProcessService.APP.Services;
 using DotNetEnv;
+using ProcessService.APP.Interfaces;
+using ProcessService.Infrastructure.Services;
 
 Env.Load();
 
@@ -10,8 +11,8 @@ var host = Host.CreateDefaultBuilder()
     .ConfigureServices((context, services) =>
     {
         services.AddSingleton<IBrokerConnection, BrokerConnection>();
-        services.AddSingleton<S3Service>();
-        services.AddSingleton<VideoProcessor>();
+        services.AddSingleton<IS3Service, S3Service>();
+        services.AddSingleton<IVideoProcessor, VideoProcessor>();
         services.AddHostedService<VideoProcessorService>();
     })
     .Build();

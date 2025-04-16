@@ -1,19 +1,20 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Pedidos.Infrastructure.Broker;
+using ProcessService.APP.Interfaces;
 using ProcessService.Infrastructure.Broker;
-using System.Collections;
 using System.Text.Json;
 
-namespace ProcessService.APP.Services
+namespace ProcessService.Infrastructure.Services
 {
     public class VideoProcessorService : BackgroundService
     {
         private readonly IBrokerConnection _brokerConnection;
-        private readonly S3Service _s3Service;
-        private readonly VideoProcessor _videoProcessor;
-        private readonly string Exchange = "videoOperations";       
+        private readonly IS3Service _s3Service;
+        private readonly IVideoProcessor _videoProcessor;
+        private readonly string Exchange = "videoOperations";
+        
 
-        public VideoProcessorService(IBrokerConnection brokerConnection, S3Service s3Service, VideoProcessor videoProcessor)
+        public VideoProcessorService(IBrokerConnection brokerConnection, IS3Service s3Service, IVideoProcessor videoProcessor)
         {
             _brokerConnection = brokerConnection;
             _s3Service = s3Service;

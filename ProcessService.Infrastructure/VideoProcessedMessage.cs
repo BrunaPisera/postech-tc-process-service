@@ -1,4 +1,4 @@
-﻿namespace ProcessService.APP
+﻿namespace ProcessService.Infrastructure
 {
     public class VideoProcessedMessage
     {

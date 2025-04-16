@@ -1,10 +1,11 @@
 ﻿using FFMpegCore;
+using ProcessService.APP.Interfaces;
 using System.Drawing;
 using System.IO.Compression;
 
-namespace ProcessService.APP.Services
+namespace ProcessService.Infrastructure.Services
 {
-    public class VideoProcessor
+    public class VideoProcessor : IVideoProcessor
     {
         public async Task<string> ProcessAsync(byte[] videoBytes)
         {
