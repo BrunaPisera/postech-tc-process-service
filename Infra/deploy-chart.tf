@@ -10,8 +10,8 @@ provider "helm" {
   }
 }
 
-resource "helm_release" "process_service" {
-  name             = "process_service"
+resource "helm_release" "process" {
+  name             = "process"
   namespace        = "dev"
   create_namespace = true
   chart            = "../Helm/process_service-chart"
