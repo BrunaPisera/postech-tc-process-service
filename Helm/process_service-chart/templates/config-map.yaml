@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configmap.name }}
+  namespace: {{ .Values.namespace }}
+data:
+  Broker__HostName: "{{ .Values.rabbitmq.hostname }}"
+  Broker__Port: "{{ .Values.rabbitmq.port }}"
+  Broker__Username: "{{ .Values.rabbitmq.username }}"
+  Broker__VirtualHost: "{{ .Values.rabbitmq.virtualhost }}"
+  Aws__BucketName: "{{ .Values.aws.bucketName }}"
