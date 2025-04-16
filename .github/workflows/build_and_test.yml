@@ -29,6 +29,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: Install ffmpeg
+      run: sudo apt-get update && sudo apt-get install -y ffmpeg
     - name: Generate coverage file
       run: |
         for project in $(find . -type f -name "*.Tests.csproj"); do
