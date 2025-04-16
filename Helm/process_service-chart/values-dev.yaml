@@ -1,0 +1,25 @@
+namespace: dev
+
+# API
+apiName: process-service
+apiImage: 
+  name: brunapisera/process-service
+  tag: latest
+apiNodePort: 30200
+
+# Secret
+secret:
+  name: secret
+
+rabbitmq:
+  username: xtpbliuz 
+  hostname: woodpecker-01.rmq.cloudamqp.com
+  password: 
+  port: 5672
+  virtualhost: xtpbliuz
+
+aws:
+  accessKeyId: 
+  secretAccessKey: 
+  sessionToken: 
+  bucketName: videouploadtc

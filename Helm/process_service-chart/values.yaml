@@ -1,0 +1,29 @@
+namespace: default
+
+# API
+apiName: process-service
+apiImage: 
+  name: brunapisera/process-service
+  tag: latest
+apiNodePort: 30200
+
+# Config map
+configmap:
+  name: process-service-config-map
+  data:
+
+rabbitmq:
+  username: xtpbliuz 
+  hostname: woodpecker-01.rmq.cloudamqp.com
+  password: 
+  port: 5672
+  virtualhost: xtpbliuz
+
+# Secret
+secret:
+  name: secret
+
+aws:
+  accessKeyId: 
+  secretAccessKey: 
+  sessionToken: 
