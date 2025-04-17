@@ -38,3 +38,10 @@ O serviço envia uma nova mensagem para informar o status do processamento e for
 - **Helm**: Gerenciamento de de pacotes kubernetes.
 - **EKS**: Cluster Kubernetes na nuvem da AWS.
 - **Terraform**: Automação de criação de recursos em provedores de nuvem.
+
+ℹ️ Este repositório faz parte de um conjunto de repositórios (outros serviços, infraestrutura e banco de dados) que formam o sistema VidProc. Link de todos os repositórios envolvidos:
+- [Infraestrutura AWS](https://github.com/BrunaPisera/postech-tc-infra)
+- [API de StatusTracking](https://github.com/BrunaPisera/postech-tc-status-tracking-api)
+- [API de upload](https://github.com/BrunaPisera/postech-tc-upload)
+- [Serviço de Processamento](https://github.com/BrunaPisera/postech-tc-process-service)
+- [Banco de Dados](https://github.com/BrunaPisera/postech-tc-db)
