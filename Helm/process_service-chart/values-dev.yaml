@@ -9,7 +9,7 @@ apiNodePort: 30200
 
 # Secret
 secret:
-  name: secret
+  name: process-secret
 
 rabbitmq:
   username: xtpbliuz 
