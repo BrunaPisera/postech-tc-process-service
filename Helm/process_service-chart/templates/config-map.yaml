@@ -9,3 +9,4 @@ data:
   BROKER_USERNAME: "{{ .Values.rabbitmq.username }}"
   BROKER_VIRTUALHOST: "{{ .Values.rabbitmq.virtualhost }}"
   AWS_BUCKET_NAME: "{{ .Values.aws.bucketName }}"
+  AWS_REGION: "{{ .Values.aws.region }}"

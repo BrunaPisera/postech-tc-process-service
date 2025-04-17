@@ -27,3 +27,5 @@ aws:
   accessKeyId: 
   secretAccessKey: 
   sessionToken: 
+  bucketName: videouploadtc
+  region: us-east-1
