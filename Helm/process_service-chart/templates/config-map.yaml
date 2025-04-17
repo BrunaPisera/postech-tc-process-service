@@ -4,8 +4,8 @@ metadata:
   name: {{ .Values.configmap.name }}
   namespace: {{ .Values.namespace }}
 data:
-  Broker__HostName: "{{ .Values.rabbitmq.hostname }}"
-  Broker__Port: "{{ .Values.rabbitmq.port }}"
-  Broker__Username: "{{ .Values.rabbitmq.username }}"
-  Broker__VirtualHost: "{{ .Values.rabbitmq.virtualhost }}"
-  Aws__BucketName: "{{ .Values.aws.bucketName }}"
+  BROKER_HOSTNAME: "{{ .Values.rabbitmq.hostname }}"
+  BROKER_PORT: "{{ .Values.rabbitmq.port }}"
+  BROKER_USERNAME: "{{ .Values.rabbitmq.username }}"
+  BROKER_VIRTUALHOST: "{{ .Values.rabbitmq.virtualhost }}"
+  AWS_BUCKET_NAME: "{{ .Values.aws.bucketName }}"
